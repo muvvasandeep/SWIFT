@@ -1,0 +1,82 @@
+Done in python language and the file should take input from the file with name Swift.swift
+Testcase1:(Assigns value to the variables)
+Input:
+var a=6
+var b=4
+b=a
+print(b)
+
+Output:
+6
+
+Testcase2:(Doenot allow to update immutable value)
+Input:
+var a=6
+let b=4
+b=a
+print(b)
+
+Output:
+b is immutable value
+
+Testcase3:(checks whether variable declared or not)
+Input:
+var a=6
+b=4
+b=a
+print(b)
+
+Output:
+b not declared
+
+Testcase4:(Evaluates if,else statement)
+Input:
+var a=6
+ var b=4
+if a<b{
+	print(a)
+}
+else{
+	print(b)
+}
+
+Output:
+4
+
+Testcase5:(Evaluates if,else if,else statements)
+Input:
+var a=4
+ var b=4
+if a<b{
+	print(a)
+}
+else if a==b{
+	print("equal")
+}
+else{
+	print(b)
+}
+s
+Output:
+equal
+
+Testcase6:(Ignores single line comments)
+Input:
+var a=4
+var b=4
+//print(a+b)
+var c=a+b
+print(c)
+if a<b{
+	print(a)
+}
+else if a==b{
+	print("equal")
+}
+else{
+	print(b)
+}
+
+Output:
+8
+equal
