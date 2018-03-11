@@ -44,7 +44,10 @@ def DECLARATION(data,state,flag,end,count,n):
             if data[i]=="=":
                 c=""
             elif data[i] in sandy and i!=1:
-                c+=str(sandy[data[i]])
+                if data[i].isnumeric():
+                    c+=str(sandy[data[i]])
+                else:
+                    c+='"'+sandy[data[i]]+'"'
             else:
                 c+=data[i]
         sandy[data[1]]=str(eval(c))
@@ -73,13 +76,17 @@ def IF(data,state,flag,end,count,n):
             continue
         else:
             c+=data[i]
-    if eval(c):
-        state=1
-        end=1
-    else:
-        state=0
-        end=0
-    return 11,state,end,flag,count
+    try:
+        if eval(c):
+            state=1
+            end=1
+        else:
+            state=0
+            end=0
+        return 11,state,end,flag,count
+    except:
+        print("variable not declared")
+        return True,state,end,flag,count
 
 def ELSEIF(data,state,flag,end,count,n):
     c=""
@@ -100,16 +107,20 @@ def ELSEIF(data,state,flag,end,count,n):
             continue
         else:
             c+=data[i]
-    if eval(c):
-        state=1
-    else:
-        state=0
-    if end==1:
-        return 11,0,end,flag,count
-    else:
-        if state==1:
-            end=1
-        return 11,state,end,flag,count
+    try:
+        if eval(c):
+            state=1
+        else:
+            state=0
+        if end==1:
+            return 11,0,end,flag,count
+        else:
+            if state==1:
+                end=1
+            return 11,state,end,flag,count
+    except:
+        print("variable not declared")
+        return True,state,end,flag,count
 
 def ELSE(data,state,flag,end,count,n):
     if n==1:
@@ -143,7 +154,10 @@ def ASSIGN(data,state,flag,end,count,n):
             if data[i]=="=":
                 c=""
             elif data[i] in sandy and i!=0:
-                c+=str(sandy[data[i]])
+                if data[i].isnumeric():
+                    c+=str(sandy[data[i]])
+                else:
+                    c+='"'+sandy[data[i]]+'"'
             else:
                 c+=data[i]
         sandy[data[0]]=eval(c)

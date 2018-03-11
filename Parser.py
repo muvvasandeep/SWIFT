@@ -9,7 +9,11 @@ def PARSER(data,state,flag,end,count):
         elif data[0]=="print":
             return 11,state,end,flag,count
         elif data[0]=="var" or data[0]=="let":
+            #syntax=declaration(data)
+            #if syntax:
             return DECLARATION(data,state,flag,end,count,n)
+            #else:
+               # return syntax,state,end,flag,count
         elif data[0]=="if":
             return IF(data,state,flag,end,count,n)
         elif data[0]=="else" and data[1]=="if":
@@ -28,6 +32,63 @@ def PARSER(data,state,flag,end,count):
         return 11,state,end,flag,count
 
 ################################################################################
+'''
+Grammar for declaration:
+declaration->constant_declaration|variable_declaration
+constant_declaration->var p1
+variable_declaratioon->let p1
+p1-> p1 EQUAL p2|DEC|DEC,p1
+p2-> DEC|NUM
+'''
+def declaration(tokens):
+    length=len(tokens)
+    tokenslist={}
+    tokenslist[tokens[0]]="KEYWORD"
+    if tokens[0]=="let" or tokens[0]=="var":
+        for i in range(1,length):
+            if tokens[i]=="=":
+                tokenslist[tokens[i]]="EQUAL"
+            elif tokens[i].isnumeric() or type(tokens[i]) is float:
+                tokenslist[tokens[i]]="NUM"
+            elif tokens[i]==",":
+                tokenslist[tokens[i]]="COMMA"
+            else:
+                tokenslist[tokens[i]]="DEC"
+    if tokenslist[tokens[1]]=="," or tokenslist[tokens[length-1]]==",":
+        return False
+    for i in range(1,length):
+        if tokenslist[tokens[i]]=="EQUAL":
+            if tokenslist[tokens[i-1]]=="COMMA" or tokenslist[tokens[i+1]]=="COMMA":
+                return False
+            else:
+                break
+        elif tokenslist[tokens[i]]=="NUM":
+            return False
+        elif tokenslist[tokens[i]]=="DEC":
+            if tokenslist[tokens[i+1]]=="DEC":
+                return False
+        elif tokenslist[tokens[i]]==",":
+            if tokenslist[tokens[i+1]]==",":
+                return False
+    n=i-1
+    for j in range(i+1,length):
+        if tokenslist[tokens[i]]=="DEC" or tokenslist[tokens[i]]=="NUM":
+            if tokenslist[tokens[i]]=="DEC" or tokenslist[tokens[i]]=="NUM":
+                return False
+        elif tokenslist[tokens[i]]==",":
+            if tokenslist[tokens[i+1]]==",":
+                return False
+    m=length-(i+1)
+    #print(tokenslist)
+    '''if n==m:
+        return True
+    else:
+        return False'''
+                
+
+
+
+################################################################################
 def main():
     with open("Swift.swift","r") as fp: #takes input from Swift.swift file
         i=0
@@ -42,7 +103,8 @@ def main():
                 i+=1
                 string=line.strip().split(' ')
                 data=LEXER(string)
-                #print(data,11)
+                #syntax=declaration(data)
+                print(data)
                 check,state,end,flag,count=PARSER(data,state,flag,end,count)
             elif check==False:
                 print("Syntax error in line number ",i)

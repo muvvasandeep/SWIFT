@@ -44,8 +44,8 @@ def LEXER(swift):
             j=0
             while j<num:
                 variable=''
-                if swift[j].isdigit() or swift[j].isalpha() or swift[j]=="_" or swift[j]=='"' or swift[j]=="'":
-                    while swift[j].isdigit() or swift[j].isalpha() or swift[j]=="_" or swift[j]=='"' or swift[j]=="'":
+                if swift[j].isdigit() or swift[j].isalpha() or swift[j]=="_" or swift[j]=='"' or swift[j]=="'" or swift[j]==".":
+                    while swift[j].isdigit() or swift[j].isalpha() or swift[j]=="_" or swift[j]=='"' or swift[j]=="'" or swift[j]==".":
                         variable+=swift[j]
                         j+=1
                         if j==num:
