@@ -1,5 +1,14 @@
 from Lexer import *
 from Interpreter import *
+'''
+Grammar for assigning statement
+S->n=E
+E->TB
+B->+TB|-TB|epsilon
+T->FC
+C->*FC|/FC|epsilon
+F->(E)|n
+'''
 ################################################################################
 def PARSER(data,state,flag,end,count):
     n=len(data)
@@ -9,11 +18,11 @@ def PARSER(data,state,flag,end,count):
         elif data[0]=="print":
             return 11,state,end,flag,count
         elif data[0]=="var" or data[0]=="let":
-            #syntax=declaration(data)
-            #if syntax:
-            return DECLARATION(data,state,flag,end,count,n)
-            #else:
-               # return syntax,state,end,flag,count
+            syntax=declaration(data)
+            if syntax==True:
+                return DECLARATION(data,state,flag,end,count,n)
+            else:
+                return syntax,state,end,flag,count
         elif data[0]=="if":
             return IF(data,state,flag,end,count,n)
         elif data[0]=="else" and data[1]=="if":
@@ -40,6 +49,7 @@ variable_declaratioon->let p1
 p1-> p1 EQUAL p2|DEC|DEC,p1
 p2-> DEC|NUM
 '''
+#parsing the declaration statement
 def declaration(tokens):
     length=len(tokens)
     tokenslist={}
@@ -79,6 +89,7 @@ def declaration(tokens):
             if tokenslist[tokens[i+1]]==",":
                 return False
     m=length-(i+1)
+    return True
     #print(tokenslist)
     '''if n==m:
         return True
@@ -104,8 +115,9 @@ def main():
                 string=line.strip().split(' ')
                 data=LEXER(string)
                 #syntax=declaration(data)
-                print(data)
+                #print(data)
                 check,state,end,flag,count=PARSER(data,state,flag,end,count)
+                #print(check)
             elif check==False:
                 print("Syntax error in line number ",i)
                 break
